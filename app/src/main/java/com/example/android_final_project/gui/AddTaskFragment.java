@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.android_final_project.R;
 import com.example.android_final_project.application.MainApplication;
@@ -31,7 +32,6 @@ import java.util.Calendar;
  * create an instance of this fragment.
  */
 public class AddTaskFragment extends Fragment {
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -52,6 +52,10 @@ public class AddTaskFragment extends Fragment {
     private String retreivedDateTimeString;
 
     private TaskViewModel taskViewModel;
+
+    private int idOfCheckedRadio;
+
+    private final int UNCHECKED_RADIOBUTTON = -1;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -107,10 +111,9 @@ public class AddTaskFragment extends Fragment {
 
         // Initialize Button
         saveButton = view.findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(v -> saveTask());
+        saveButton.setOnClickListener(v -> saveTask(view));
 
-        pickDateButt.setOnClickListener (v -> getDateAndTime());
-
+        pickDateButt.setOnClickListener(v -> getDateAndTime());
 
 
         return view;
@@ -123,48 +126,37 @@ public class AddTaskFragment extends Fragment {
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(),
-                (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
-                    // Handle the selected date
-                    String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDayOfMonth;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
+            // Handle the selected date
+            String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDayOfMonth;
 
-                    // Create a TimePickerDialog to select the time
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-                            getContext(),
-                            (view1, selectedHourOfDay, selectedMinute) -> {
-                                // Handle the selected time
-                                String selectedTime = selectedHourOfDay + ":" + selectedMinute;
+            // Create a TimePickerDialog to select the time
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view1, selectedHourOfDay, selectedMinute) -> {
+                // Handle the selected time
+                String selectedTime = selectedHourOfDay + ":" + selectedMinute;
 
-                                // Combine the date and time
-                                String selectedDateTime = selectedDate + " " + selectedTime;
+                // Combine the date and time
+                String selectedDateTime = selectedDate + " " + selectedTime;
 
-                                // Update your EditText or any other view with the selected date and time
-                                pickDateEt.setText(selectedDateTime);
-                            },
-                            hourOfDay,
-                            minute,
-                            true // Set to true for 24-hour format, false for AM/PM format
-                    );
+                // Update your EditText or any other view with the selected date and time
+                pickDateEt.setText(selectedDateTime);
+            }, hourOfDay, minute, true // Set to true for 24-hour format, false for AM/PM format
+            );
 
-                    // Show the TimePickerDialog after selecting the date
-                    timePickerDialog.show();
-                },
-                year,
-                month,
-                dayOfMonth
-        );
+            // Show the TimePickerDialog after selecting the date
+            timePickerDialog.show();
+        }, year, month, dayOfMonth);
         retreivedDateTimeString = String.format("%04d-%02d-%02d %02d:%02d:00", year, month, dayOfMonth, hourOfDay, minute);
         datePickerDialog.show();
     }
 
-    private void saveTask() {
+    private void saveTask(View view) {
 
         String taskName = taskNameEt.getText().toString();
         String description = taskDescriptionEt.getText().toString();
-        String dueDate = retreivedDateTimeString!= null ? retreivedDateTimeString : "0000-00-00 00:00:00";
+        String dueDate = retreivedDateTimeString != null ? retreivedDateTimeString : Task.INITIAL_DATE_TIME;
         Task.TaskType taskType = Task.TaskType.UNDEFINED;
-        
+
         Log.d(MainApplication.LOG_HEADER, "inputs");
         Log.d(MainApplication.LOG_HEADER, "taskName: " + taskName);
         Log.d(MainApplication.LOG_HEADER, "description: " + description);
@@ -172,17 +164,18 @@ public class AddTaskFragment extends Fragment {
 
         // Get selected task type from RadioGroup
         int selectedId = taskTypeRG.getCheckedRadioButtonId();
+        idOfCheckedRadio = selectedId;
         Log.d(MainApplication.LOG_HEADER, "radio button ID: " + selectedId);
-        if (selectedId != -1) {
-            if(selectedId == R.id.personalRB){
+        if (selectedId != UNCHECKED_RADIOBUTTON) {
+            if (selectedId == R.id.personalRB) {
                 Log.d(MainApplication.LOG_HEADER, "PERSONAL");
                 taskType = Task.TaskType.PERSONAL;
             }
-            if(selectedId == R.id.workRB){
+            if (selectedId == R.id.workRB) {
                 Log.d(MainApplication.LOG_HEADER, "WORK");
                 taskType = Task.TaskType.WORK;
             }
-            if(selectedId == R.id.leisureRB){
+            if (selectedId == R.id.leisureRB) {
                 Log.d(MainApplication.LOG_HEADER, "LEISURE");
                 taskType = Task.TaskType.LEISURE;
             }
@@ -194,8 +187,22 @@ public class AddTaskFragment extends Fragment {
             // Create a Task object and save it
             Task task = new Task(taskName, description, taskType, dueDate);
             taskViewModel.insert(task);
+            Toast.makeText(getActivity(), "Task added successfully", Toast.LENGTH_SHORT).show();
+            Log.i(MainApplication.LOG_HEADER, "TASK ADDED SUCCESSFULLY");
+            clearForm(view);
         } else {
-            // Show error message
+            Toast.makeText(getActivity(), "Task failed to be added.", Toast.LENGTH_SHORT).show();
+            Log.e(MainApplication.LOG_HEADER, "TASK FAILED TO BE ADDED.");
+        }
+    }
+
+    private void clearForm(View view) {
+        taskNameEt.setText("");
+        taskDescriptionEt.setText("");
+        retreivedDateTimeString = "0000-00-00 00:00:00";
+        if (idOfCheckedRadio != UNCHECKED_RADIOBUTTON) {
+            RadioButton selectedButton = view.findViewById(idOfCheckedRadio);
+            selectedButton.setChecked(false);
         }
     }
 

@@ -18,12 +18,14 @@ public class Task {
     private int id;
     private String name;
     private String description;
-    private TaskType taskType; // Updated field name
-    private String dueDate; // Store due date as a string in the database
+    private TaskType taskType;
+    private String dueDate;
 
     // Transient field to convert between String and Date
     @Ignore
     private Date dueDateAsDate;
+    @Ignore
+    public static final String INITIAL_DATE_TIME = "0000-00-00 00:00:00";
 
     public enum TaskType {
         PERSONAL,
