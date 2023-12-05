@@ -1,4 +1,4 @@
-package com.example.android_final_project;
+package com.example.android_final_project.old_project_package;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -20,8 +20,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
-import com.example.android_final_project.image_processing.db.ImageEntity;
-import com.example.android_final_project.image_processing.db.AppDatabase;
+import com.example.android_final_project.R;
+import com.example.android_final_project.old_project_package.image_processing.db.ImageEntity;
+import com.example.android_final_project.old_project_package.image_processing.db.AppDatabase;
 
 import java.io.File;
 import java.io.FileOutputStream;

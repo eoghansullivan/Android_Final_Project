@@ -1,4 +1,4 @@
-package com.example.android_final_project;
+package com.example.android_final_project.old_project_package;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import com.example.android_final_project.image_processing.ImageAdapter;
-import com.example.android_final_project.image_processing.db.ImageEntity;
-import com.example.android_final_project.image_processing.db.AppDatabase;
+import com.example.android_final_project.R;
+import com.example.android_final_project.old_project_package.image_processing.ImageAdapter;
+import com.example.android_final_project.old_project_package.image_processing.db.ImageEntity;
+import com.example.android_final_project.old_project_package.image_processing.db.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
