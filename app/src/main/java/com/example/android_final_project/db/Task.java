@@ -24,7 +24,8 @@ public class Task {
     public enum TaskType {
         PERSONAL,
         WORK,
-        LEISURE
+        LEISURE,
+        UNDEFINED
     }
 
     // Constructors

@@ -1,10 +1,12 @@
 package com.example.android_final_project.gui;
 
+import android.app.Application;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.android_final_project.R;
+import com.example.android_final_project.db.Task;
+import com.example.android_final_project.db.TaskViewModel;
+import com.example.android_final_project.db.TaskViewModelFactory;
 
 import java.util.Calendar;
 
@@ -44,6 +49,8 @@ public class AddTaskFragment extends Fragment {
     private Calendar calendar;
 
     private String retreivedDateTimeString;
+
+    private TaskViewModel taskViewModel;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -79,6 +86,12 @@ public class AddTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_task, container, false);
+
+        // Initialize TaskViewModel
+        if (getActivity() != null) {
+            TaskViewModelFactory factory = new TaskViewModelFactory(getActivity().getApplication());
+            taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
+        }
 
         calendar = Calendar.getInstance();
 
@@ -149,6 +162,7 @@ public class AddTaskFragment extends Fragment {
         String taskName = taskNameEt.getText().toString();
         String description = taskDescriptionEt.getText().toString();
         String dueDate = retreivedDateTimeString!= null ? retreivedDateTimeString : "0000-00-00 00:00:00";
+        Task.TaskType taskType = Task.TaskType.UNDEFINED;
         
         Log.d(LOG_HEADER, "inputs");
         Log.d(LOG_HEADER, "taskName: " + taskName);
@@ -157,17 +171,28 @@ public class AddTaskFragment extends Fragment {
 
         // Get selected task type from RadioGroup
         int selectedId = taskTypeRG.getCheckedRadioButtonId();
+        Log.d(LOG_HEADER, "radio button ID: " + selectedId);
         if (selectedId != -1) {
-            RadioButton selectedRadioButton = view.findViewById(selectedId);
-            String taskType = selectedRadioButton.getText().toString();
+            if(selectedId == R.id.personalRB){
+                Log.d(LOG_HEADER, "PERSONAL");
+                taskType = Task.TaskType.PERSONAL;
+            }
+            if(selectedId == R.id.workRB){
+                Log.d(LOG_HEADER, "WORK");
+                taskType = Task.TaskType.WORK;
+            }
+            if(selectedId == R.id.leisureRB){
+                Log.d(LOG_HEADER, "LEISURE");
+                taskType = Task.TaskType.LEISURE;
+            }
         }
 
 
         // Validate inputs and proceed with saving task logic
         if (validateInput(taskName, description, dueDate)) {
             // Create a Task object and save it
-            //Task task = new Task(taskName, description, dueDate, taskType);
-            //taskViewModel.insert(task);
+            Task task = new Task(taskName, description, taskType, dueDate);
+            taskViewModel.insert(task);
         } else {
             // Show error message
         }
