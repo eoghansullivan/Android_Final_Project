@@ -1,4 +1,4 @@
-package com.example.android_final_project.image_processing;
+package com.example.android_final_project.old_project_package.image_processing;
 
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;

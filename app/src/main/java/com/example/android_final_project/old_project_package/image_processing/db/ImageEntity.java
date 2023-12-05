@@ -1,4 +1,4 @@
-package com.example.android_final_project.image_processing.db;
+package com.example.android_final_project.old_project_package.image_processing.db;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
