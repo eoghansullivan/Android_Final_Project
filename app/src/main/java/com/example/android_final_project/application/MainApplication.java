@@ -11,6 +11,7 @@ public class MainApplication extends Application {
     private static MainApplication instance;
     private AppDatabase database;
 
+    public static final String LOG_HEADER = "A00287845";
     @Override
     public void onCreate() {
         super.onCreate();

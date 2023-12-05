@@ -1,8 +1,12 @@
 package com.example.android_final_project.db;
 
+import android.util.Log;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.android_final_project.application.MainApplication;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +41,8 @@ public class Task {
         this.name = name;
         this.description = description;
         this.taskType = taskType;
-        this.dueDate = dueDate; // Store due date as a string in the database
+        this.dueDate = dueDate;
+        Log.d(MainApplication.LOG_HEADER, "created: " + this);
     }
 
     // Getters and Setters
@@ -108,5 +113,16 @@ public class Task {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", taskType=" + taskType +
+                ", dueDate='" + dueDate + '\'' +
+                '}';
     }
 }
