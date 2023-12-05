@@ -1,0 +1,4 @@
+// Top-leError opening contents of device file "IMG_1700087414350.png": 'secure_mkdirs failed: OperatioError opening contents of device file "IMG_1700087414350.png": 'secure_mkdirs failed: Operation not permitted' error on device serial #emulator-5554 executing service 'sync-send('/data/local/tmp/device-explorer/.__temp_cp_test_file__.tmp')'n nError opening contents of device file "IMG_1700087414350.png": 'secure_mkdirs failed: Operation not permitted' error on device serial #emulator-5554 executing service 'sync-send('/data/local/tmp/device-explorer/.__temp_cp_test_file__.tmp')'ot permitted' error on device serial #emulator-5554 executing service 'sync-send('/data/local/tmp/device-explorer/.__temp_cp_test_file__.tmp')'vel build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id("com.android.application") version "8.1.2" apply false
+}
