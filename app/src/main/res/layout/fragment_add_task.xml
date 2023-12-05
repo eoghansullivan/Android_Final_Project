@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.AddTask" >
+    tools:context=".gui.AddTaskFragment" >
 
     <EditText
         android:id="@+id/taskNameEt"
@@ -19,6 +19,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/pickDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="36dp"
+        android:text="Pick a Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pickDateLabel" />
+
     <EditText
         android:id="@+id/pickDateEt"
         android:layout_width="wrap_content"
@@ -28,7 +38,7 @@
         android:ems="10"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pickDateLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/pickDateButton" />
 
     <TextView
         android:id="@+id/pickDateLabel"
