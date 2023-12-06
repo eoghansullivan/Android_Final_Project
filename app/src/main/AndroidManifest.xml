@@ -21,9 +21,6 @@
         android:theme="@style/Theme.Android_Final_Project"
         tools:targetApi="31">
         <activity
-            android:name=".TestOutputActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivityFrame"
             android:exported="true">
             <intent-filter>
@@ -37,7 +34,7 @@
             android:exported="false" />
         <activity
             android:name=".old_project_package.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
     </application>
 
 </manifest>
