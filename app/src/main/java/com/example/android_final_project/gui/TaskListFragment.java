@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.android_final_project.R;
 import com.example.android_final_project.db.TaskViewModel;
@@ -35,6 +36,8 @@ public class TaskListFragment extends Fragment {
     private TaskViewModel taskViewModel;
     private RecyclerView tasksRecyclerView;
     private TaskAdapter adapter;
+
+    private Button closeListButt;
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -65,17 +68,15 @@ public class TaskListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task_list, container, false);
+        closeListButt = view.findViewById(R.id.closeListButt);
         tasksRecyclerView = view.findViewById(R.id.tasksRecyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new TaskAdapter();
+        adapter = new TaskAdapter(this);
         tasksRecyclerView.setAdapter(adapter);
 
         if (getActivity() != null) {
@@ -84,10 +85,14 @@ public class TaskListFragment extends Fragment {
         }
 
         // Observe the LiveData from the ViewModel
-        taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> {
-            adapter.setTasks(tasks);
-        });
+        taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> adapter.setTasks(tasks));
+
+        closeListButt.setOnClickListener(v -> closeFragment());
 
         return view;
+    }
+
+    public void closeFragment() {
+        getParentFragmentManager().popBackStack();
     }
 }

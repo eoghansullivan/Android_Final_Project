@@ -1,36 +1,20 @@
 package com.example.android_final_project;
 
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
-import android.os.Looper;
-import android.view.View;
-import android.view.ViewParent;
-
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewAssertion;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.android_final_project.R;
-import com.example.android_final_project.TestOutputActivity;
 import com.example.android_final_project.application.MainApplication;
 import com.example.android_final_project.db.AppDatabase;
 import com.example.android_final_project.db.Task;
 import com.example.android_final_project.db.TaskDao;
 import com.example.android_final_project.gui.TaskListFragment;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +43,7 @@ public class TaskListFragmentTest {
     @Before
     public void launchFragment() {
         // Launch the MainActivity
-        ActivityScenario.launch(TestOutputActivity.class);
+        ActivityScenario.launch(MainActivityFrame.class);
 
         // Initialize the fragment scenario for the TaskListFragment
         FragmentScenario.launchInContainer(TaskListFragment.class);

@@ -5,18 +5,16 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
 
-    private TaskRepository repository;
-    private LiveData<List<Task>> allTasks;
+    private final TaskRepository repository;
+    private final LiveData<List<Task>> allTasks;
 
     public TaskViewModel(@NonNull Application application, TaskRepository repository) {
         super(application);
-       // repository = new TaskRepository();
         this.repository = repository;
         allTasks = repository.getAllTasks();
     }
@@ -25,8 +23,11 @@ public class TaskViewModel extends AndroidViewModel {
         repository.insert(task);
     }
 
+    public void update(Task task) {
+        repository.update(task);
+    }
+
     public LiveData<List<Task>> getAllTasks() {
         return allTasks;
     }
-    // ... Other ViewModel code
 }

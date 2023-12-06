@@ -8,12 +8,14 @@ import androidx.room.PrimaryKey;
 
 import com.example.android_final_project.application.MainApplication;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Task {
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
@@ -29,16 +31,43 @@ public class Task {
     public static final String INITIAL_DATE_TIME = "0000-00-00 00:00:00";
 
     public enum TaskType {
-        PERSONAL,
-        WORK,
-        LEISURE,
-        UNDEFINED
+        LEISURE("LEISURE"),
+        PERSONAL("PERSONAL"),
+        WORK("WORK"),
+        UNDEFINED("UNDEFINED");
+
+        private final String description;
+
+        public static TaskType fromDescription(String description) {
+            for (TaskType taskType : TaskType.values()) {
+                if (taskType.description.equalsIgnoreCase(description)) {
+                    return taskType;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with description: " + description);
+        }
+
+        private TaskType(String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
     }
+
 
     // Constructors
     @Ignore
     public Task() {
         // Default constructor
+    }
+
+    @Ignore
+    public Task(String name, String description, TaskType taskType, String dueDate, int id){
+        this(name, description, taskType, dueDate);
+        this.id = id;
     }
 
     public Task(String name, String description, TaskType taskType, String dueDate) {
