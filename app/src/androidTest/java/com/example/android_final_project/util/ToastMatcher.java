@@ -1,4 +1,4 @@
-package com.example.android_final_project.helpers;
+package com.example.android_final_project.util;
 import android.os.IBinder;
 import android.view.WindowManager;
 

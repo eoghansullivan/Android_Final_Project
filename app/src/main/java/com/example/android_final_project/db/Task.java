@@ -20,6 +20,7 @@ public class Task {
     private String description;
     private TaskType taskType;
     private String dueDate;
+    private boolean completed;
 
     // Transient field to convert between String and Date
     @Ignore
@@ -35,6 +36,7 @@ public class Task {
     }
 
     // Constructors
+    @Ignore
     public Task() {
         // Default constructor
     }
@@ -44,6 +46,7 @@ public class Task {
         this.description = description;
         this.taskType = taskType;
         this.dueDate = dueDate;
+        this.completed = false;
         Log.d(MainApplication.LOG_HEADER, "created: " + this);
     }
 
@@ -86,6 +89,14 @@ public class Task {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate; // Store due date as a string in the database
+    }
+
+    public void setCompleted(boolean completed){
+        this.completed = completed;
+    }
+
+    public boolean isCompleted(){
+        return this.completed;
     }
 
     // Get and set methods for dueDateAsDate
