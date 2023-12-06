@@ -44,7 +44,7 @@ public class AddTaskFragment extends Fragment {
 
     private EditText taskNameEt, taskDescriptionEt, pickDateEt;
     private RadioGroup taskTypeRG;
-    private Button saveButton, pickDateButt;
+    private Button saveButton, pickDateButt, closeTab;
 
     private Calendar calendar;
 
@@ -110,8 +110,9 @@ public class AddTaskFragment extends Fragment {
 
         // Initialize Button
         saveButton = view.findViewById(R.id.saveButton);
+        closeTab = view.findViewById(R.id.closeTaskTab);
         saveButton.setOnClickListener(v -> saveTask(view));
-
+        closeTab.setOnClickListener(v-> closeFragment());
         pickDateButt.setOnClickListener(v -> getDateAndTime());
 
         return view;

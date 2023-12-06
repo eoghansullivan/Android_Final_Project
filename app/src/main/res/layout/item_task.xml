@@ -29,4 +29,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit"/>
+
+    <TextView
+        android:id="@+id/invisibleTextViewForDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:text="This is invisible text" />
+
+    <TextView
+        android:id="@+id/invisibleTextViewForID"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:text="This is invisible text" />
+
 </LinearLayout>

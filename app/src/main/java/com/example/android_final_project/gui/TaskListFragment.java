@@ -76,7 +76,7 @@ public class TaskListFragment extends Fragment {
         closeListButt = view.findViewById(R.id.closeListButt);
         tasksRecyclerView = view.findViewById(R.id.tasksRecyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new TaskAdapter();
+        adapter = new TaskAdapter(this);
         tasksRecyclerView.setAdapter(adapter);
 
         if (getActivity() != null) {
@@ -93,8 +93,6 @@ public class TaskListFragment extends Fragment {
     }
 
     public void closeFragment() {
-        if (getParentFragmentManager() != null) {
-            getParentFragmentManager().popBackStack();
-        }
+        getParentFragmentManager().popBackStack();
     }
 }

@@ -33,11 +33,14 @@ public class MainActivityFrame extends AppCompatActivity {
     }
 
     private void viewTasks() {
-        showFragment(new TaskListFragment());
+
+        Fragment taskListFrag = new TaskListFragment();
+        showFragment(taskListFrag);
     }
 
     private void addTask() {
-        showFragment(new AddTaskFragment());
+        Fragment addTaskFrag = new AddTaskFragment();
+        showFragment(addTaskFrag);
     }
 
     public void showFragment(Fragment fragment) {
@@ -48,6 +51,7 @@ public class MainActivityFrame extends AppCompatActivity {
         // If you need to pass data to the fragment, use fragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fragmentFrame, fragment);
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentTransaction.addToBackStack(null); // Enables back navigation
         fragmentTransaction.commit();
     }
