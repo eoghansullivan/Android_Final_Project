@@ -47,6 +47,7 @@ dependencies {
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation ("androidx.test:runner:1.5.2")
     androidTestImplementation ("androidx.test:rules:1.5.0")
+    androidTestImplementation ("org.mockito:mockito-core:3.3.3")
     debugImplementation("androidx.test:core:1.5.0")
     debugImplementation ("androidx.fragment:fragment-testing:1.6.2")
 

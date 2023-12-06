@@ -36,6 +36,7 @@ public class Task {
     }
 
     // Constructors
+    @Ignore
     public Task() {
         // Default constructor
     }

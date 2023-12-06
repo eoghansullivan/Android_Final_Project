@@ -12,9 +12,10 @@ public class TaskRepository {
 
     private TaskDao taskDao;
 
-    public TaskRepository() {
-        AppDatabase db = MainApplication.getInstance().getDatabase();
-        taskDao = db.taskDao();
+    public TaskRepository(TaskDao taskDao) {
+        // AppDatabase db = MainApplication.getInstance().getDatabase();
+        //taskDao = db.taskDao();
+        this.taskDao = taskDao;
     }
 
     // Insert a task into the database
