@@ -28,4 +28,8 @@ public class MainApplication extends Application {
     public AppDatabase getDatabase() {
         return database;
     }
+
+    public void setDatabase(AppDatabase database){
+        this.database = database;
+    }
 }
