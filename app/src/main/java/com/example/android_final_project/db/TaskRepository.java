@@ -1,9 +1,12 @@
 package com.example.android_final_project.db;
 
-import android.app.Application;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.android_final_project.application.MainApplication;
+
+import java.util.List;
 
 public class TaskRepository {
 
@@ -32,6 +35,11 @@ public class TaskRepository {
             asyncTaskDao.insert(params[0]);
             return null;
         }
+    }
+
+    // Get all tasks from the database
+    public LiveData<List<Task>> getAllTasks() {
+        return taskDao.getAllTasks();
     }
 
     // You can also add methods for update, delete, and query operations here

@@ -3,6 +3,7 @@ package com.example.android_final_project.gui;
 import android.app.Application;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.android_final_project.R;
+import com.example.android_final_project.TestOutputActivity;
 import com.example.android_final_project.application.MainApplication;
 import com.example.android_final_project.db.Task;
 import com.example.android_final_project.db.TaskViewModel;
@@ -56,6 +58,7 @@ public class AddTaskFragment extends Fragment {
     private int idOfCheckedRadio;
 
     private final int UNCHECKED_RADIOBUTTON = -1;
+    private Button testOutputButt;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -115,8 +118,15 @@ public class AddTaskFragment extends Fragment {
 
         pickDateButt.setOnClickListener(v -> getDateAndTime());
 
+        testOutputButt = view.findViewById(R.id.outputButt);
+        testOutputButt.setOnClickListener(v->testOutput());
 
         return view;
+    }
+
+    private void testOutput() {
+        Intent intent = new Intent(getActivity(), TestOutputActivity.class);
+        startActivity(intent);
     }
 
     private void getDateAndTime() {

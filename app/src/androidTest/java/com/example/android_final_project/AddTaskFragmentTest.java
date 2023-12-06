@@ -15,7 +15,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.android_final_project.gui.AddTaskFragment;
-import com.example.android_final_project.helpers.ToastMatcher;
+import com.example.android_final_project.util.ToastMatcher;
 import com.example.android_final_project.old_project_package.MainActivity;
 
 import org.junit.Rule;

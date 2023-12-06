@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import android.content.Context;
-import com.example.android_final_project.helpers.LiveDataTestUtil;
+import com.example.android_final_project.util.LiveDataTestUtil;
 
 import org.junit.After;
 import org.junit.Before;

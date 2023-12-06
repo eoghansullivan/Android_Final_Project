@@ -3,12 +3,18 @@ package com.example.android_final_project.gui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android_final_project.R;
+import com.example.android_final_project.db.TaskViewModel;
+import com.example.android_final_project.db.TaskViewModelFactory;
+import com.example.android_final_project.gui.util.TaskAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,10 @@ public class TaskListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TaskViewModel taskViewModel;
+    private RecyclerView tasksRecyclerView;
+    private TaskAdapter adapter;
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -55,12 +65,29 @@ public class TaskListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_task_list, container, false);
+        tasksRecyclerView = view.findViewById(R.id.tasksRecyclerView);
+        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new TaskAdapter();
+        tasksRecyclerView.setAdapter(adapter);
+
+        if (getActivity() != null) {
+            TaskViewModelFactory factory = new TaskViewModelFactory(getActivity().getApplication());
+            taskViewModel = new ViewModelProvider(requireActivity(), factory).get(TaskViewModel.class);
+        }
+
+        // Observe the LiveData from the ViewModel
+        taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> {
+            adapter.setTasks(tasks);
+        });
+
+        return view;
     }
 }
