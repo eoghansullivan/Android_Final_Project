@@ -2,8 +2,10 @@ package com.example.android_final_project.gui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.android_final_project.R;
+import com.example.android_final_project.db.Task;
 import com.example.android_final_project.db.TaskViewModel;
 import com.example.android_final_project.db.TaskViewModelFactory;
 import com.example.android_final_project.gui.util.TaskAdapter;
@@ -22,7 +25,7 @@ import com.example.android_final_project.gui.util.TaskAdapter;
  * Use the {@link TaskListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements TaskAdapter.TaskAdapterListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +41,7 @@ public class TaskListFragment extends Fragment {
     private TaskAdapter adapter;
 
     private Button closeListButt;
+
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -89,10 +93,30 @@ public class TaskListFragment extends Fragment {
 
         closeListButt.setOnClickListener(v -> closeFragment());
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                adapter.deleteItem(position);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
+        taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> adapter.setTasks(tasks));
+
         return view;
     }
 
     public void closeFragment() {
         getParentFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onDeleteTask(Task task) {
+        taskViewModel.delete(task);
     }
 }

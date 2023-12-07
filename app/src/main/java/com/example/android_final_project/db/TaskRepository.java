@@ -51,6 +51,26 @@ public class TaskRepository {
         }
     }
 
+    public void delete(Task task) {
+        // Implement deletion logic, possibly using AsyncTask like you did for insert
+        new DeleteAsyncTask(taskDao).execute(task);
+    }
+
+    // AsyncTask for delete operation
+    private static class DeleteAsyncTask extends AsyncTask<Task, Void, Void> {
+        private TaskDao asyncTaskDao;
+
+        DeleteAsyncTask(TaskDao dao) {
+            asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Task... params) {
+            asyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
     public LiveData<List<Task>> getAllTasks() {
         return taskDao.getAllTasks();
     }
