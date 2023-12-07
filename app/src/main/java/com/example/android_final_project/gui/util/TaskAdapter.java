@@ -1,5 +1,6 @@
 package com.example.android_final_project.gui.util;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,7 @@ import com.example.android_final_project.R;
 import com.example.android_final_project.application.util.CustomLogger;
 import com.example.android_final_project.db.Task;
 import com.example.android_final_project.gui.AddTaskFragment;
+import com.example.android_final_project.gui.TaskListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private List<Task> tasks = new ArrayList<>();
     private final Fragment parentFragment;
 
-    public TaskAdapter(Fragment parentFragment) {
-        this.parentFragment = parentFragment;
+    public interface TaskAdapterListener {
+        void onDeleteTask(Task task);
+    }
+
+    private final TaskAdapterListener listener;
+
+    public TaskAdapter(TaskListFragment parentFragmentListener) {
+        this.parentFragment = parentFragmentListener;
+        this.listener = parentFragmentListener;
+    }
+
+
+    public void deleteItem(int position) {
+        Task taskToDelete = tasks.get(position);
+
+        new AlertDialog.Builder(parentFragment.getContext())
+                .setTitle("Delete Task")
+                .setMessage("Are you sure you want to delete this task?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    listener.onDeleteTask(taskToDelete);
+                    tasks.remove(position);
+                    notifyItemRemoved(position);
+                    Toast.makeText(parentFragment.getContext(), "Task deleted", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> notifyItemChanged(position))
+                .show();
     }
 
 
