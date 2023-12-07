@@ -40,7 +40,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.listener = parentFragmentListener;
     }
 
-
     public void deleteItem(int position) {
         Task taskToDelete = tasks.get(position);
 
@@ -56,7 +55,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 .setNegativeButton("Cancel", (dialog, which) -> notifyItemChanged(position))
                 .show();
     }
-
 
     @NonNull
     @Override

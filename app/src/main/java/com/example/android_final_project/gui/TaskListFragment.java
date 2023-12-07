@@ -88,9 +88,6 @@ public class TaskListFragment extends Fragment implements TaskAdapter.TaskAdapte
             taskViewModel = new ViewModelProvider(requireActivity(), factory).get(TaskViewModel.class);
         }
 
-        // Observe the LiveData from the ViewModel
-        taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> adapter.setTasks(tasks));
-
         closeListButt.setOnClickListener(v -> closeFragment());
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -105,6 +102,7 @@ public class TaskListFragment extends Fragment implements TaskAdapter.TaskAdapte
                 adapter.deleteItem(position);
             }
         });
+
         itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
         taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> adapter.setTasks(tasks));
 
