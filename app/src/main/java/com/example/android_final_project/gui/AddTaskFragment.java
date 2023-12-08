@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.android_final_project.R;
 import com.example.android_final_project.application.MainApplication;
+import com.example.android_final_project.application.util.alarms.ReminderScheduler;
 import com.example.android_final_project.db.Task;
 import com.example.android_final_project.db.TaskViewModel;
 import com.example.android_final_project.db.TaskViewModelFactory;
@@ -47,6 +49,8 @@ public class AddTaskFragment extends Fragment {
     private RadioGroup taskTypeRG;
 
     private Calendar calendar;
+
+    private CheckBox setAlarmCb;
 
     private String retreivedDateTimeString;
 
@@ -96,11 +100,14 @@ public class AddTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_task, container, false);
+        isEditing = false;
+
 
         if (getActivity() != null) {
             TaskViewModelFactory factory = new TaskViewModelFactory(getActivity().getApplication());
             taskViewModel = new ViewModelProvider(requireActivity(), factory).get(TaskViewModel.class);
         }
+
 
         calendar = Calendar.getInstance();
         taskNameEt = view.findViewById(R.id.taskNameEt);
@@ -110,11 +117,13 @@ public class AddTaskFragment extends Fragment {
         taskTypeRG = view.findViewById(R.id.taskTypeRG);
         Button saveButton = view.findViewById(R.id.saveButton);
         Button closeTab = view.findViewById(R.id.closeTaskTab);
-        saveButton.setOnClickListener(v -> saveTask(view));
+        setAlarmCb = view.findViewById(R.id.checkBoxAlarm);
+
+
+        saveButton.setOnClickListener(v -> saveTask(view, null));
         closeTab.setOnClickListener(v -> closeFragment());
         pickDateButt.setOnClickListener(v -> getDateAndTime());
 
-        isEditing = false;
 
         if (getArguments() != null && getArguments().containsKey("task")) {
             isEditing = true;
@@ -123,6 +132,7 @@ public class AddTaskFragment extends Fragment {
             pickDateEt.setText(currentTask.getDueDate());
             taskDescriptionEt.setText(currentTask.getDescription());
             String taskType = currentTask.getTaskType().toString();
+            setAlarmCb.setChecked(currentTask.isAlarmOn());
 
             if (taskType.equalsIgnoreCase("LEISURE")) {
                 checkedRadioButton = view.findViewById(R.id.leisureRB);
@@ -142,6 +152,13 @@ public class AddTaskFragment extends Fragment {
             }
         }
 
+        if (getArguments() != null && getArguments().containsKey("updatingCheckbox")) {
+            isEditing = true;
+            currentTask = (Task) getArguments().getSerializable("updatingCheckbox");
+            saveTask(view, currentTask);
+            closeFragment();
+        }
+
         return view;
     }
 
@@ -153,27 +170,25 @@ public class AddTaskFragment extends Fragment {
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
-
-            String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDayOfMonth;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view1, selectedHourOfDay, selectedMinute) -> {
-                String selectedTime = selectedHourOfDay + ":" + selectedMinute;
-                String selectedDateTime = selectedDate + " " + selectedTime;
-                pickDateEt.setText(selectedDateTime);
-            }, hourOfDay, minute, true // true for 24-hour, false for AM/PM
-            );
+                retreivedDateTimeString = String.format("%04d-%02d-%02d %02d:%02d:00", selectedYear, selectedMonth + 1, selectedDayOfMonth, selectedHourOfDay, selectedMinute);
+                pickDateEt.setText(retreivedDateTimeString);
+            }, hourOfDay, minute, true); // true for 24-hour, false for AM/PM
 
             timePickerDialog.show();
         }, year, month, dayOfMonth);
-        retreivedDateTimeString = String.format("%04d-%02d-%02d %02d:%02d:00", year, month, dayOfMonth, hourOfDay, minute);
+
         datePickerDialog.show();
     }
 
-    private void saveTask(View view) {
+    private void saveTask(View view, Task updateCheckTask) {
         String taskName = taskNameEt.getText().toString();
         String description = taskDescriptionEt.getText().toString();
         String dueDate = retreivedDateTimeString != null ? retreivedDateTimeString : Task.INITIAL_DATE_TIME;
+        Log.d("DATE_BROKEN", retreivedDateTimeString);
         Task.TaskType taskType = Task.TaskType.UNDEFINED;
+        boolean alarmOn = setAlarmCb.isChecked();
 
         Log.d(MainApplication.LOG_HEADER, "inputs");
         Log.d(MainApplication.LOG_HEADER, "taskName: " + taskName);
@@ -198,15 +213,21 @@ public class AddTaskFragment extends Fragment {
             }
         }
 
+        if (updateCheckTask != null) {
+            taskViewModel.update(updateCheckTask);
+            return;
+        }
+
         if (validateInput(taskName, description, dueDate)) {
-            if(!isEditing) {
-                Task task = new Task(taskName, description, taskType, dueDate);
+            if (!isEditing) {
+                Task task = new Task(taskName, description, taskType, dueDate, alarmOn);
                 Toast.makeText(getActivity(), "checking " + dueDate, Toast.LENGTH_SHORT).show();
                 taskViewModel.insert(task);
-            }else{
-                Task task = new Task(taskName, description, taskType, dueDate, currentTask.getId());
+            } else {
+                Task task = new Task(taskName, description, taskType, dueDate, alarmOn, currentTask.getId());
                 taskViewModel.update(task);
             }
+
             Toast.makeText(getContext(), isEditing ? "Task updated" : "Task created", Toast.LENGTH_SHORT).show();
             Log.i(MainApplication.LOG_HEADER, "TASK ADDED SUCCESSFULLY");
             clearForm(view);
@@ -215,6 +236,8 @@ public class AddTaskFragment extends Fragment {
             Toast.makeText(getActivity(), "Task failed to be added.", Toast.LENGTH_SHORT).show();
             Log.e(MainApplication.LOG_HEADER, "TASK FAILED TO BE ADDED.");
         }
+
+        ReminderScheduler.synchroniseReminders(getContext(), this.taskViewModel, getViewLifecycleOwner());
     }
 
     private void clearForm(View view) {

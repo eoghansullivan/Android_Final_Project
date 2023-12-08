@@ -33,7 +33,7 @@ public class TaskListFragmentTest {
 
         // Pre-populate the database with mock data
         TaskDao taskDao = db.taskDao();
-        Task mockTask = new Task("Mock Task", "Description", Task.TaskType.PERSONAL, "2021-01-01");
+        Task mockTask = new Task("Mock Task", "Description", Task.TaskType.PERSONAL, "2021-01-01", true);
         taskDao.insert(mockTask);
 
         // Set the in-memory database instance in your application class
