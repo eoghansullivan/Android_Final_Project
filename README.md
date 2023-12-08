@@ -37,38 +37,11 @@ Tasks:
   The user can delete a task.
   Once deleted, the task is removed from the list and the database.
 
-- As a user, I want to categorize tasks, so that I can organize my tasks more effectively.
-  Acceptance Criteria:
-  The user can assign categories to each task.
-  The user can view tasks filtered by categories.
-
 - As a user, I want to set reminders for tasks, so that I don’t forget important deadlines.
   Acceptance Criteria:
   The user can set a reminder for a task.
   The app sends a notification at the specified reminder time.
 
-- As a user, I want to track the progress of my tasks, so that I know how much I have accomplished.
-  Acceptance Criteria:
-  The user can mark tasks as completed.
-  The app shows the progress of tasks (e.g., a progress bar or percentage).
-
-- As a user, I want to search for a task, so that I can quickly find specific tasks.
-  Acceptance Criteria:
-  The user can enter search terms to filter the task list.
-  The app displays tasks that match the search criteria.
-
-- As a user, I want to sort tasks, so that I can view them in an order that suits me (e.g., by due
-  date, creation date, or priority).
-  Acceptance Criteria:
-  The user can choose a sorting criterion.
-  The task list updates to reflect the chosen sorting order.
-
-- As a user, I want the app to remember my preferences, so that I don’t have to reset them every
-  time
-  I use the app.
-  Acceptance Criteria:
-  The app saves user preferences like default view or sorting order.
-  Upon reopening the app, the saved preferences are applied.
 
 ## In depth task list
 
@@ -176,32 +149,7 @@ Tasks
         Test the delete functionality for different tasks.
         Ensure the task list and database accurately reflect the deletion.
 
-User Story 5: Categorizing Tasks
-
-As a user, I want to categorize tasks, so that I can organize my tasks more effectively.
-Tasks
-
-    Design Category Functionality:
-        Add an option to create and manage categories.
-        Include functionality to assign a category when creating or editing a task.
-
-    Database Integration for Categories:
-        Define a Category entity and create a CategoryDao in the Room database.
-        Update the Task entity to include a category relationship.
-
-    UI for Category Assignment:
-        In the task creation/editing form, include a dropdown or selection list for categories.
-        Display the assigned category in the task list view.
-
-    Implement Category Filtering:
-        Allow users to filter tasks based on categories.
-        Update the task list view to reflect the selected category filter.
-
-    Testing:
-        Test creating, editing, and deleting categories.
-        Ensure tasks are correctly categorized and filters work as expected.
-
-User Story 6: Setting Reminders for Tasks
+User Story 5: Setting Reminders for Tasks
 
 As a user, I want to set reminders for tasks, so that I don’t forget important deadlines.
 Tasks
@@ -218,97 +166,6 @@ Tasks
         Develop a system to trigger notifications at the set reminder time.
         Ensure notifications contain relevant task information.
 
-    Integrate Reminder with UI:
-        Display set reminders in the task list.
-        Allow users to edit or remove reminders from existing tasks.
-
     Testing:
         Test setting, editing, and removing reminders.
         Verify that reminders trigger notifications at the correct time.
-
-User Story 7: Tracking Progress of Tasks
-
-As a user, I want to track the progress of my tasks, so that I know how much I have accomplished.
-Tasks
-
-    Design Progress Tracking Feature:
-        Add a visual indicator (e.g., progress bar or checkmark) for each task in the task list to show completion status.
-        Implement a functionality to mark tasks as completed/incomplete.
-
-    Database Updates:
-        Modify the Task entity to include a field for tracking completion status.
-
-    UI Integration for Task Completion:
-        Enable users to change the completion status of a task directly from the task list (e.g., via a toggle or checkbox).
-        Update the task list UI to reflect the completion status visually.
-
-    Overall Progress Overview:
-        Implement a feature to display overall progress (e.g., percentage of tasks completed, tasks remaining).
-
-    Testing:
-        Test the ability to mark tasks as completed/incomplete.
-        Ensure the progress overview accurately reflects the current status of tasks.
-
-User Story 8: Searching for a Task
-
-As a user, I want to search for a task, so that I can quickly find specific tasks.
-Tasks
-
-    Implement Search Functionality:
-        Add a search bar to the task list UI.
-        Implement a method in TaskDao to query tasks based on search terms.
-
-    UI Integration for Search:
-        Ensure the search bar is easily accessible in the task list view.
-        Implement real-time filtering of tasks as the user types in the search bar.
-
-    Handling No Results:
-        Display a message or indication when no tasks match the search criteria.
-
-    Testing:
-        Test search functionality with various keywords.
-        Validate the performance of the search feature, especially with a large number of tasks.
-
-User Story 9: Sorting Tasks
-
-As a user, I want to sort tasks, so that I can view them in an order that suits me (e.g., by due date, creation date, or priority).
-Tasks
-
-    Design Sorting Options:
-        Add UI elements to allow users to select sorting criteria (e.g., dropdown menu or buttons).
-
-    Implement Sorting Logic:
-        Create methods in TaskDao for different sorting queries.
-        Allow dynamic sorting without needing to reload the entire task list.
-
-    UI Integration for Sorting:
-        Ensure that the sorting options are intuitive and easy to access.
-        Update the task list view based on the selected sorting criteria.
-
-    Testing:
-        Test each sorting option to ensure it organizes tasks correctly.
-        Validate that sorting is efficient and responsive.
-
-User Story 10: Remembering User Preferences
-
-As a user, I want the app to remember my preferences, so that I don’t have to reset them every time I use the app.
-Tasks
-
-    Identify Preferences to Store:
-        Determine which user preferences should be stored (e.g., default sorting order, view settings).
-
-    Implement Preference Storage:
-        Use Android's SharedPreferences to store user preferences.
-        Ensure preferences are stored securely and efficiently.
-
-    Apply Preferences on App Start:
-        Retrieve stored preferences when the app launches.
-        Apply these preferences to the relevant UI elements and functionalities.
-
-    Settings UI:
-        Create a settings page where users can modify their preferences.
-        Implement logic to update preferences both in the UI and storage upon changes.
-
-    Testing:
-        Test storing, retrieving, and applying user preferences.
-        Ensure preferences persist across app restarts and are applied correctly.
