@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.android_final_project.R;
 import com.example.android_final_project.application.MainApplication;
+import com.example.android_final_project.application.util.alarms.ReminderScheduler;
 import com.example.android_final_project.db.Task;
 import com.example.android_final_project.db.TaskViewModel;
 import com.example.android_final_project.db.TaskViewModelFactory;
@@ -169,19 +170,15 @@ public class AddTaskFragment extends Fragment {
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
-
-            String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDayOfMonth;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view1, selectedHourOfDay, selectedMinute) -> {
-                String selectedTime = selectedHourOfDay + ":" + selectedMinute;
-                String selectedDateTime = selectedDate + " " + selectedTime;
-                pickDateEt.setText(selectedDateTime);
-            }, hourOfDay, minute, true // true for 24-hour, false for AM/PM
-            );
+                retreivedDateTimeString = String.format("%04d-%02d-%02d %02d:%02d:00", selectedYear, selectedMonth + 1, selectedDayOfMonth, selectedHourOfDay, selectedMinute);
+                pickDateEt.setText(retreivedDateTimeString);
+            }, hourOfDay, minute, true); // true for 24-hour, false for AM/PM
 
             timePickerDialog.show();
         }, year, month, dayOfMonth);
-        retreivedDateTimeString = String.format("%04d-%02d-%02d %02d:%02d:00", year, month, dayOfMonth, hourOfDay, minute);
+
         datePickerDialog.show();
     }
 
@@ -189,6 +186,7 @@ public class AddTaskFragment extends Fragment {
         String taskName = taskNameEt.getText().toString();
         String description = taskDescriptionEt.getText().toString();
         String dueDate = retreivedDateTimeString != null ? retreivedDateTimeString : Task.INITIAL_DATE_TIME;
+        Log.d("DATE_BROKEN", retreivedDateTimeString);
         Task.TaskType taskType = Task.TaskType.UNDEFINED;
         boolean alarmOn = setAlarmCb.isChecked();
 
@@ -238,6 +236,8 @@ public class AddTaskFragment extends Fragment {
             Toast.makeText(getActivity(), "Task failed to be added.", Toast.LENGTH_SHORT).show();
             Log.e(MainApplication.LOG_HEADER, "TASK FAILED TO BE ADDED.");
         }
+
+        ReminderScheduler.synchroniseReminders(getContext(), this.taskViewModel, getViewLifecycleOwner());
     }
 
     private void clearForm(View view) {
