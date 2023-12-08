@@ -41,7 +41,7 @@ public class TaskDaoTest {
 
     @Test
     public void insertTaskAndReadInList() throws Exception {
-        Task task = new Task("Test Task", "Description", Task.TaskType.WORK, "0000-00-00 00:00:00");
+        Task task = new Task("Test Task", "Description", Task.TaskType.WORK, "0000-00-00 00:00:00", true);
         taskDao.insert(task);
         List<Task> allTasks = LiveDataTestUtil.getValue(taskDao.getAllTasks());
         assertThat(allTasks.get(0).getName(), equalTo(task.getName()));

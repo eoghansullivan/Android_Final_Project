@@ -68,12 +68,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task currentTask = tasks.get(position);
         holder.taskId = currentTask.getId();
         holder.taskName = currentTask.getName();
+        holder.alarmOn = currentTask.isAlarmOn();
         holder.taskTypeString = currentTask.getTaskType().toString();
         holder.taskDueDate = currentTask.getDueDate();
         holder.taskDescription = currentTask.getDescription();
         holder.textViewTaskName.setText(currentTask.getName());
         holder.textViewDueDate.setText(currentTask.getDueDate());
-        holder.checkBoxCompleted.setChecked(currentTask.isCompleted());
+        holder.checkBoxIsAlarm.setChecked(currentTask.isAlarmOn());
     }
 
     @Override
@@ -89,29 +90,42 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     class TaskViewHolder extends RecyclerView.ViewHolder {
         private String taskName, taskDescription, taskTypeString, taskDueDate;
         private int taskId;
+        private boolean alarmOn;
         private final TextView textViewTaskName;
         private final TextView textViewDueDate;
-        private final CheckBox checkBoxCompleted;
+        private final CheckBox checkBoxIsAlarm;
 
 
         public TaskViewHolder(View itemView) {
             super(itemView);
             textViewTaskName = itemView.findViewById(R.id.textViewTaskName);
             textViewDueDate = itemView.findViewById(R.id.textViewDueDate);
-            checkBoxCompleted = itemView.findViewById(R.id.checkBoxCompleted);
+            checkBoxIsAlarm = itemView.findViewById(R.id.checkBoxAlarm);
             Button editButt = itemView.findViewById(R.id.editButton);
-            editButt.setOnClickListener(v -> editEntry());
+            editButt.setOnClickListener(v -> editEntry(false));
+            checkBoxIsAlarm.setOnClickListener(v-> editEntry(true));
+
+            // Set up a result listener
+            parentFragment.getParentFragmentManager().setFragmentResultListener("requestKey", parentFragment, (requestKey, result) -> {
+                // Handle the result. For example, update a list or refresh the UI
+                // You can retrieve data from the result bundle
+            });
         }
 
-        private void editEntry() {
+
+        private void editEntry(boolean replaceCheckboxOnly) {
             FragmentManager fragmentManager = parentFragment.getParentFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if(replaceCheckboxOnly){
+                alarmOn = checkBoxIsAlarm.isChecked();
+            }
+            String taskKey = replaceCheckboxOnly ? "updatingCheckbox" : "task";
 
             try {
-                Task taskToEdit = new Task(taskName, taskDescription, Task.TaskType.fromDescription(taskTypeString), taskDueDate, taskId);
+                Task taskToEdit = new Task(taskName, taskDescription, Task.TaskType.fromDescription(taskTypeString), taskDueDate, alarmOn, taskId);
                 Fragment formFragment = new AddTaskFragment();
                 Bundle args = new Bundle();
-                args.putSerializable("task", taskToEdit);
+                args.putSerializable(taskKey, taskToEdit);
                 formFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.fragmentFrame, formFragment);
                 fragmentTransaction.addToBackStack(null);

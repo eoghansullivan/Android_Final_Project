@@ -16,7 +16,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.android_final_project.gui.AddTaskFragment;
 import com.example.android_final_project.util.ToastMatcher;
-import com.example.android_final_project.old_project_package.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,8 +25,8 @@ import org.junit.runner.RunWith;
 public class AddTaskFragmentTest {
 
     @Rule
-    public ActivityScenarioRule<MainActivity> activityRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivityFrame> activityRule =
+            new ActivityScenarioRule<>(MainActivityFrame.class);
 
     @Test
     public void testTaskFormInput() {

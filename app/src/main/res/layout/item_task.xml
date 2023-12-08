@@ -9,7 +9,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Task Name"
+        android:hint="@string/task_name"
         android:textSize="16sp" />
 
     <TextView
@@ -17,10 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="Due Date"/>
+        android:hint="@string/due_date"/>
 
     <CheckBox
-        android:id="@+id/checkBoxCompleted"
+        android:id="@+id/checkBoxAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -28,20 +28,20 @@
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"/>
+        android:text="@string/edit"/>
 
     <TextView
         android:id="@+id/invisibleTextViewForDescription"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
-        android:text="This is invisible text" />
+        android:text="@string/this_is_invisible_text" />
 
     <TextView
         android:id="@+id/invisibleTextViewForID"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
-        android:text="This is invisible text" />
+        android:text="@string/this_is_invisible_text" />
 
 </LinearLayout>

@@ -7,15 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityFrame">
 
-    <!-- Your existing UI components go here -->
-
     <Button
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
         android:layout_marginTop="30dp"
-        android:text="Add Task"
+        android:text="@string/add_task"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,11 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="142dp"
         android:layout_marginTop="30dp"
-        android:text="View Tasks"
+        android:text="@string/view_tasks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addTaskButton" />
 
-    <!-- Wrap the bottom ConstraintLayout with a ScrollView -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,8 +39,6 @@
             android:id="@+id/fragmentFrame"
             android:layout_width="409dp"
             android:layout_height="wrap_content">
-
-            <!-- Content inside the scrollable area goes here -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -1,5 +1,6 @@
 package com.example.android_final_project.db;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.room.Entity;
@@ -22,8 +23,10 @@ public class Task implements Serializable {
     private String description;
     private TaskType taskType;
     private String dueDate;
+
     private boolean completed;
 
+    private boolean alarmOn;
     // Transient field to convert between String and Date
     @Ignore
     private Date dueDateAsDate;
@@ -47,7 +50,7 @@ public class Task implements Serializable {
             throw new IllegalArgumentException("No enum constant with description: " + description);
         }
 
-        private TaskType(String description) {
+        TaskType(String description) {
             this.description = description;
         }
 
@@ -65,17 +68,18 @@ public class Task implements Serializable {
     }
 
     @Ignore
-    public Task(String name, String description, TaskType taskType, String dueDate, int id){
-        this(name, description, taskType, dueDate);
+    public Task(String name, String description, TaskType taskType, String dueDate,boolean alarmOn, int id){
+        this(name, description, taskType, dueDate, alarmOn);
         this.id = id;
     }
 
-    public Task(String name, String description, TaskType taskType, String dueDate) {
+    public Task(String name, String description, TaskType taskType, String dueDate, boolean alarmOn) {
         this.name = name;
         this.description = description;
         this.taskType = taskType;
         this.dueDate = dueDate;
         this.completed = false;
+        this.alarmOn = alarmOn;
         Log.d(MainApplication.LOG_HEADER, "created: " + this);
     }
 
@@ -130,31 +134,35 @@ public class Task implements Serializable {
 
     // Get and set methods for dueDateAsDate
     public Date getDueDateAsDate() {
-        if (dueDateAsDate == null) {
-            dueDateAsDate = stringToDate(dueDate); // Convert String to Date
-        }
-        return dueDateAsDate;
-    }
-
-    public void setDueDateAsDate(Date dueDateAsDate) {
-        this.dueDateAsDate = dueDateAsDate;
-        this.dueDate = dateToString(dueDateAsDate); // Convert Date to String
+        return stringToDate(dueDate);
     }
 
     // Helper methods for converting Date to String and vice versa
     private String dateToString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
     }
 
     private Date stringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return dateFormat.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean isAlarmOn() {
+        return alarmOn;
+    }
+
+    public void setAlarmOn(boolean alarmOn) {
+        this.alarmOn = alarmOn;
+    }
+
+    public void setDueDateAsDate(Date dueDateAsDate) {
+        this.dueDateAsDate = dueDateAsDate;
     }
 
     @Override
