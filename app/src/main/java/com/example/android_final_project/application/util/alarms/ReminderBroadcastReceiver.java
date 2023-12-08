@@ -28,8 +28,6 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
         int taskId = intent.getIntExtra("TASK_ID", -1);
         Log.d(MainApplication.LOG_HEADER, "RECEIVING BROADCAST for task ID" + taskId);
 
-
-        // Trigger the notification
         if(taskId != -1) {
 
             triggerNotification(context, taskName, taskDescription, taskId);
@@ -43,7 +41,7 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system
+
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
 
@@ -55,8 +53,6 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
     private void triggerNotification(Context context, String taskName, String taskDescription, int taskId) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Create a notification channel if necessary (required for Android O and above)
-
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(taskName)
                 .setContentText(taskDescription)
@@ -65,6 +61,6 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
         Log.d(MainApplication.LOG_HEADER, "TRIGGERING NOTIFICATION for: " + taskName);
 
-        notificationManager.notify(taskId, notification); // Use task ID as unique notification ID
+        notificationManager.notify(taskId, notification);
     }
 }

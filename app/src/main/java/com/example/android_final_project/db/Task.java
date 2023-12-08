@@ -60,12 +60,8 @@ public class Task implements Serializable {
         }
     }
 
-
-    // Constructors
     @Ignore
-    public Task() {
-        // Default constructor
-    }
+    public Task() {}
 
     @Ignore
     public Task(String name, String description, TaskType taskType, String dueDate,boolean alarmOn, int id){
@@ -121,7 +117,7 @@ public class Task implements Serializable {
     }
 
     public void setDueDate(String dueDate) {
-        this.dueDate = dueDate; // Store due date as a string in the database
+        this.dueDate = dueDate;
     }
 
     public void setCompleted(boolean completed){
@@ -132,12 +128,10 @@ public class Task implements Serializable {
         return this.completed;
     }
 
-    // Get and set methods for dueDateAsDate
     public Date getDueDateAsDate() {
         return stringToDate(dueDate);
     }
 
-    // Helper methods for converting Date to String and vice versa
     private String dateToString(Date date) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
