@@ -130,6 +130,7 @@ public class AddTaskFragment extends Fragment {
             currentTask = (Task) getArguments().getSerializable("task");
             taskNameEt.setText(currentTask.getName());
             pickDateEt.setText(currentTask.getDueDate());
+            retreivedDateTimeString = currentTask.getDueDate();
             taskDescriptionEt.setText(currentTask.getDescription());
             String taskType = currentTask.getTaskType().toString();
             setAlarmCb.setChecked(currentTask.isAlarmOn());
@@ -186,7 +187,7 @@ public class AddTaskFragment extends Fragment {
         String taskName = taskNameEt.getText().toString();
         String description = taskDescriptionEt.getText().toString();
         String dueDate = retreivedDateTimeString != null ? retreivedDateTimeString : Task.INITIAL_DATE_TIME;
-        Log.d("DATE_BROKEN", retreivedDateTimeString);
+        Log.d("DATE_BROKEN", dueDate);
         Task.TaskType taskType = Task.TaskType.UNDEFINED;
         boolean alarmOn = setAlarmCb.isChecked();
 
